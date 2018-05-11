@@ -1,7 +1,15 @@
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtWebKitWidgets import *
+from PyQt5.QtWebKit import QWebSettings
 import requests
+
+class WebView(QWebView):
+    def __init__(self, parent=None):
+        super(WebView, self).__init__(parent)
+        settings = self.settings()
+        settings.setAttribute(QWebSettings.LocalStorageEnabled, False)
+        settings.setAttribute(QWebSettings.PluginsEnabled, True)
 
 class Main(QWidget):
     def __init__(self, parent=None):
@@ -38,7 +46,7 @@ class Main(QWidget):
         self.setWindowTitle("Browser")
 
     def addTab(self):
-        webView = QWebView()
+        webView = WebView()
         webView.loadProgress.connect(self.loading)
         webView.loadFinished.connect(self.changePage)
         self.tabWidget.addTab(webView, "New Tab")
