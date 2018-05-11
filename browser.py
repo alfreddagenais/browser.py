@@ -21,6 +21,8 @@ class Main(QWidget):
         self.newTabButton = QPushButton(" + ")
         self.rmTabButton = QPushButton(" - ")
         self.tabWidget = QTabWidget()
+        self.zoomInButton = QPushButton("+")
+        self.zoomOutButton = QPushButton("-")
 
         self.lWebView = []
 
@@ -30,6 +32,8 @@ class Main(QWidget):
         Layout1.addWidget(self.nameLine)
         Layout1.addWidget(self.rmTabButton)
         Layout1.addWidget(self.newTabButton)
+        Layout1.addWidget(self.zoomInButton)
+        Layout1.addWidget(self.zoomOutButton)
 
         mainLayout = QVBoxLayout()
         mainLayout.addLayout(Layout1)
@@ -41,6 +45,8 @@ class Main(QWidget):
         self.newTabButton.clicked.connect(self.addTab)
         self.rmTabButton.clicked.connect(self.rmTab)
         self.tabWidget.currentChanged.connect(self.changeTab)
+        self.zoomInButton.clicked.connect(self.zoomIn)
+        self.zoomOutButton.clicked.connect(self.zoomOut)
  
         self.setLayout(mainLayout)
         self.setWindowTitle("Browser")
@@ -95,6 +101,12 @@ class Main(QWidget):
             self.lWebView[self.tabWidget.currentIndex()].back()
         except IndexError:
             return False
+
+    def zoomIn(self):
+        self.lWebView[self.tabWidget.currentIndex()].setZoomFactor(self.lWebView[self.tabWidget.currentIndex()].zoomFactor() + 0.1)
+
+    def zoomOut(self):
+        self.lWebView[self.tabWidget.currentIndex()].setZoomFactor(self.lWebView[self.tabWidget.currentIndex()].zoomFactor() - 0.1)
 
 if __name__ == '__main__':
     import sys
