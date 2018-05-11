@@ -21,8 +21,8 @@ class Main(QWidget):
         self.newTabButton = QPushButton(" + ")
         self.rmTabButton = QPushButton(" - ")
         self.tabWidget = QTabWidget()
-        self.zoomInButton = QPushButton("+")
-        self.zoomOutButton = QPushButton("-")
+        self.zoomInButton = QPushButton("Zoom In")
+        self.zoomOutButton = QPushButton("Zoom Out")
 
         self.lWebView = []
 
