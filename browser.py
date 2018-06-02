@@ -3,6 +3,17 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtWebKitWidgets import *
 from PyQt5.QtWebKit import QWebSettings
 import requests
+import re
+regex = re.compile(
+    r'^(?:http|ftp)s?://'
+    r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'
+    r'localhost|'
+    r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'
+    r'(?::\d+)?'
+    r'(?:/?|[/?]\S+)$', re.IGNORECASE)
+
+def validUrl(input):
+    return re.match(regex, input) is not None
 
 class WebView(QWebView):
     def __init__(self, parent=None):
@@ -66,7 +77,6 @@ class Main(QWidget):
                 self.lWebView.remove(self.lWebView[self.tabWidget.currentIndex()])
             except IndexError:
                 return False
-            #self.lWebView.remove(self.tabWidget.currentIndex())
 
     def changeTab(self):
         self.nameLine.setText(self.lWebView[self.tabWidget.currentIndex()].url().url())
@@ -77,11 +87,7 @@ class Main(QWidget):
             if not url_text.startswith('http://') and not url_text.startswith('https://'):
                 url_text = 'http://' + url_text
             url = QUrl(url_text)
-            try:
-                response = requests.get(url_text).status_code
-            except Exception:
-                response = 600
-            if response < 400:
+            if validUrl(url_text):
                 self.lWebView[self.tabWidget.currentIndex()].load(url)
             else:
                 self.lWebView[self.tabWidget.currentIndex()].load(QUrl("https://www.google.com/search?q=" + self.nameLine.text()))
